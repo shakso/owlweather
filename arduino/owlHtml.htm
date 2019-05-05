@@ -1,0 +1,232 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Didact+Gothic" rel="stylesheet">
+</head>
+<body>
+<script language="Javascript">
+function GetColour(v, vmin, vmax)
+{
+   var cr=1;
+   var cg=1;
+   var cb=1;
+
+   var dv;
+
+   if (v < vmin)
+      v = vmin;
+   if (v > vmax)
+      v = vmax;
+   dv = vmax - vmin;
+
+   if (v < (vmin + 0.25 * dv)) {
+      cr = 0;
+      cg = 4 * (v - vmin) / dv;
+   } else if (v < (vmin + 0.5 * dv)) {
+      cr = 0;
+      cb = 1 + 4 * (vmin + 0.25 * dv - v) / dv;
+   } else if (v < (vmin + 0.75 * dv)) {
+      cr = 4 * (v - vmin - 0.5 * dv) / dv;
+      cb = 0;
+   } else {
+      cg = 1 + 4 * (vmin + 0.75 * dv - v) / dv;
+      cb = 0;
+   }
+
+   cr=cr*255;
+   cg=cg*255;
+   cb=cb*255;
+
+
+   return(cr+","+cg+","+cb);
+}
+
+$(document).ready(function() {
+	setInterval(function() { 
+		$.get( "http://192.168.1.6/getArray", function( data ) {
+      var thermJSON = JSON.parse(data);
+			var max=0;
+			var min=200;
+         var columnTemp = [];
+         columnTemp['t0']=0;
+         columnTemp['t1']=0;
+         columnTemp['t2']=0;
+         columnTemp['t3']=0;
+         columnTemp['t4']=0;
+         columnTemp['t5']=0;
+         columnTemp['t6']=0;
+         columnTemp['t7']=0;
+
+         var avg=0;
+
+			for (var i=0; i <= thermJSON.length; i++) {
+				if (thermJSON[i] > max) max=thermJSON[i];
+				if ((thermJSON[i] < min) && (thermJSON[i] > 5)) min=thermJSON[i];
+            if (thermJSON[i]) {
+               columnTemp['t' + (i%8)]+=parseFloat(thermJSON[i]);
+               avg+=parseFloat(thermJSON[i]);
+            }
+			}
+
+         
+         avg=avg/128;
+
+			for (var i=0; i <= thermJSON.length; i++) {
+				$("div#" + i).css("background-color", "rgb(" + GetColour(thermJSON[i],min,max) + ")");
+            if (thermJSON[i]-avg > 3) {
+               $("div#" + i).css("border", "2px solid #000");
+            } else {
+               $("div#" + i).css("border", "0px");
+               
+            }
+            $("div#" + i).html((thermJSON[i]-avg).toFixed(2));
+
+			}
+
+         for(var key in columnTemp) {
+            $("div#" + key).html((columnTemp[key]/16).toFixed(2) + '&deg;C<br>' + ((columnTemp[key]/16)-avg).toFixed(2) );
+         }
+		})
+	}, 1000);
+});
+
+
+</script>
+<style type="text/css">
+
+body {
+   font-family: 'Didact Gothic', sans-serif;
+}
+
+div.block {
+   width:50px;
+   height:50px;
+   float:left;
+   background-color:#ccc;
+   color:#000;
+}
+
+div.block2 {
+   width:50px;
+   height:40px;
+   float:left;
+   background-color:#ccc;
+   font-size:14px; 
+   font-weight:bold; 
+   text-align:center;
+}
+
+div#flipme {
+   filter:FlipV;
+}
+div#blurme {
+	filter:blur(0px);
+}
+div#overflow {
+position:relative;
+overflow:hidden;
+width:400px;
+}
+</style>
+<h1>Owl Weather</h1>
+<div id="overflow">
+<div id="blurMe">
+<div id="FlipMe">
+<div style="clear:both;">
+<div class="block" id="0"></div>
+<div class="block" id="1"></div>
+<div class="block" id="2"></div>
+<div class="block" id="3"></div>
+<div class="block" id="4"></div>
+<div class="block" id="5"></div>
+<div class="block" id="6"></div>
+<div class="block" id="7"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="8"></div>
+<div class="block" id="9"></div>
+<div class="block" id="10"></div>
+<div class="block" id="11"></div>
+<div class="block" id="12"></div>
+<div class="block" id="13"></div>
+<div class="block" id="14"></div>
+<div class="block" id="15"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="16"></div>
+<div class="block" id="17"></div>
+<div class="block" id="18"></div>
+<div class="block" id="19"></div>
+<div class="block" id="20"></div>
+<div class="block" id="21"></div>
+<div class="block" id="22"></div>
+<div class="block" id="23"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="24"></div>
+<div class="block" id="25"></div>
+<div class="block" id="26"></div>
+<div class="block" id="27"></div>
+<div class="block" id="28"></div>
+<div class="block" id="29"></div>
+<div class="block" id="30"></div>
+<div class="block" id="31"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="32"></div>
+<div class="block" id="33"></div>
+<div class="block" id="34"></div>
+<div class="block" id="35"></div>
+<div class="block" id="36"></div>
+<div class="block" id="37"></div>
+<div class="block" id="38"></div>
+<div class="block" id="39"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="40"></div>
+<div class="block" id="41"></div>
+<div class="block" id="42"></div>
+<div class="block" id="43"></div>
+<div class="block" id="44"></div>
+<div class="block" id="45"></div>
+<div class="block" id="46"></div>
+<div class="block" id="47"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="48"></div>
+<div class="block" id="49"></div>
+<div class="block" id="50"></div>
+<div class="block" id="51"></div>
+<div class="block" id="52"></div>
+<div class="block" id="53"></div>
+<div class="block" id="54"></div>
+<div class="block" id="55"></div>
+</div>
+<div style="clear:both;">
+<div class="block" id="56"></div>
+<div class="block" id="57"></div>
+<div class="block" id="58"></div>
+<div class="block" id="59"></div>
+<div class="block" id="60"></div>
+<div class="block" id="61"></div>
+<div class="block" id="62"></div>
+<div class="block" id="63"></div>
+</div>
+</div>
+</div>
+<div style="clear:both;">
+<div class="block2" id="t0"></div>
+<div class="block2" id="t1"></div>
+<div class="block2" id="t2"></div>
+<div class="block2" id="t3"></div>
+<div class="block2" id="t4"></div>
+<div class="block2" id="t5"></div>
+<div class="block2" id="t6"></div>
+<div class="block2" id="t7"></div>
+</div>
+</div>
+
+
+
+</body>
+</html>
