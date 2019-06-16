@@ -9,5 +9,6 @@ Below is a summary of the files used:
 * arduino/owlHTML.htm - de-minified version of the Owl main webpage
 * arduino/owlWeather.pdf - background image used
 * nodejs/updateOwl.js - scheduled script that sends new weather information to Owl
+* OwlWeather.fzz - circuit diagram for Owl
 
 
