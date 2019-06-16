@@ -10,5 +10,5 @@ Below is a summary of the files used:
 * arduino/owlWeather.pdf - background image used
 * nodejs/updateOwl.js - scheduled script that sends new weather information to Owl
 * OwlWeather.fzz - circuit diagram for Owl
-
-
+And here's the circuit diagram (fritzing above):
+![owlDiagram](https://github.com/shakso/owlweather/blob/master/OwlWeather_bb.png)
